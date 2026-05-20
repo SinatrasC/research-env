@@ -1,0 +1,38 @@
+schema_version: research-env.v0
+id: general_agent_visible_policy_affordance
+source_env: general-agent
+
+adapter:
+  module: adapters.general_agent
+
+contracts:
+  fixed:
+    - env:general-agent
+    - solver:general-agent-solver-local
+    - provider:prime
+    - model:moonshotai/kimi-k2.6
+    - scoring:verifier-pass-rate
+    - eval_shape:paired-base-vs-evolved-3-rollouts-per-condition
+    - mutation_family:visible-policy-tool-affordance
+  mutable:
+    - envelopes/**
+    - results/**
+  substrate_mutation: false
+
+execution:
+  artifact_root: .
+  default_timeout_seconds: 1800
+  arbitrary_subjects: true
+
+substrate:
+  task_source:
+    type: verifiers
+    env_id: general-agent-solver-local
+    env_args:
+      task: calendar_scheduling_t0
+      max_turns: 100
+      timeout_seconds: 3600.0
+    question_key: question
+    answer_key: answer
+    id_key: task
+    info_key: info

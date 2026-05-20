@@ -1,0 +1,505 @@
+{
+  "schema_version": "research-env.v0",
+  "ok": true,
+  "instrument": "run_subject",
+  "substrate_id": "rl_gallery_general_agent",
+  "call": {
+    "duration_seconds": 1982.244183,
+    "id": "call_run_subject_cf7d0af5bbe9",
+    "input_sha256": "0c85ab7a1cdf108b9e19b158371a2557ce7132924fe27f858cc5f74795aebb56"
+  },
+  "result": {
+    "run_id": "vf_eval_20260520T114953Z_248e1ab5",
+    "study_id": "general_agent_affordance_replication_zero_n30",
+    "model_id": "moonshotai/kimi-k2.6",
+    "rollouts_per_condition": 3,
+    "dry_run": false,
+    "pair_results": [
+      {
+        "pair_id": "pair_001",
+        "included": true,
+        "base_task_id": "food_truck_fleet_t0",
+        "candidate_task_id": "food_truck_fleet_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before update_truck_location.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_002",
+        "included": true,
+        "base_task_id": "museum_curation_t0",
+        "candidate_task_id": "museum_curation_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before move_artifact.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_003",
+        "included": true,
+        "base_task_id": "puzzle_library_t0",
+        "candidate_task_id": "puzzle_library_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before borrow_puzzle.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_004",
+        "included": true,
+        "base_task_id": "cheese_cave_t0",
+        "candidate_task_id": "cheese_cave_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before fulfill_order.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_005",
+        "included": true,
+        "base_task_id": "port_operations_t0",
+        "candidate_task_id": "port_operations_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_berth.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_006",
+        "included": true,
+        "base_task_id": "legislature_t0",
+        "candidate_task_id": "legislature_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_to_committee.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_007",
+        "included": true,
+        "base_task_id": "herb_garden_t0",
+        "candidate_task_id": "herb_garden_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before harvest.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_008",
+        "included": true,
+        "base_task_id": "yoga_studio_t0",
+        "candidate_task_id": "yoga_studio_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before book_class.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_009",
+        "included": true,
+        "base_task_id": "flight_crew_scheduling_t0",
+        "candidate_task_id": "flight_crew_scheduling_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_crew_to_flight.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_010",
+        "included": true,
+        "base_task_id": "balloon_rides_t0",
+        "candidate_task_id": "balloon_rides_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before create_booking.",
+        "base_pass_rate": 0.333,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_011",
+        "included": true,
+        "base_task_id": "glamping_t0",
+        "candidate_task_id": "glamping_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before book_accommodation.",
+        "base_pass_rate": 0.333,
+        "evolved_pass_rate": 0.667,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_012",
+        "included": true,
+        "base_task_id": "pottery_studio_t0",
+        "candidate_task_id": "pottery_studio_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before schedule_firing.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_013",
+        "included": true,
+        "base_task_id": "wildlife_sanctuary_t0",
+        "candidate_task_id": "wildlife_sanctuary_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_enclosure.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_014",
+        "included": true,
+        "base_task_id": "time_capsule_t0",
+        "candidate_task_id": "time_capsule_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before place_item.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_015",
+        "included": true,
+        "base_task_id": "beekeeping_t0",
+        "candidate_task_id": "beekeeping_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before update_hive_status.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_016",
+        "included": true,
+        "base_task_id": "marina_mgmt_t0",
+        "candidate_task_id": "marina_mgmt_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before reserve_slip.",
+        "base_pass_rate": 0.333,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_017",
+        "included": true,
+        "base_task_id": "art_school_t0",
+        "candidate_task_id": "art_school_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before enroll_student.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_018",
+        "included": true,
+        "base_task_id": "instrument_repair_t0",
+        "candidate_task_id": "instrument_repair_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before create_repair_job.",
+        "base_pass_rate": 0.667,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_019",
+        "included": true,
+        "base_task_id": "job_fair_t0",
+        "candidate_task_id": "job_fair_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before schedule_interview.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_020",
+        "included": true,
+        "base_task_id": "cheese_shop_t0",
+        "candidate_task_id": "cheese_shop_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before checkout.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_021",
+        "included": true,
+        "base_task_id": "pharmacy_t0",
+        "candidate_task_id": "pharmacy_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before fill_prescription.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_022",
+        "included": true,
+        "base_task_id": "escape_pod_t0",
+        "candidate_task_id": "escape_pod_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before launch_pod.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_023",
+        "included": true,
+        "base_task_id": "wildlife_rehab_t0",
+        "candidate_task_id": "wildlife_rehab_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_enclosure.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_024",
+        "included": true,
+        "base_task_id": "cooking_competition_t0",
+        "candidate_task_id": "cooking_competition_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before submit_recipe.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_025",
+        "included": true,
+        "base_task_id": "synth_design_t0",
+        "candidate_task_id": "synth_design_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before finalize_patch.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_026",
+        "included": true,
+        "base_task_id": "dog_sled_t0",
+        "candidate_task_id": "dog_sled_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before register_team.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_027",
+        "included": true,
+        "base_task_id": "vehicle_inspection_t0",
+        "candidate_task_id": "vehicle_inspection_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before schedule_inspection.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_028",
+        "included": true,
+        "base_task_id": "cargo_terminal_t0",
+        "candidate_task_id": "cargo_terminal_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before dispatch_container.",
+        "base_pass_rate": 0.0,
+        "evolved_pass_rate": 0.333,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_029",
+        "included": true,
+        "base_task_id": "taproom_t0",
+        "candidate_task_id": "taproom_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before assign_beer_to_tap.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      },
+      {
+        "pair_id": "pair_030",
+        "included": true,
+        "base_task_id": "figure_skating_t0",
+        "candidate_task_id": "figure_skating_policy_affordance_t1",
+        "mutation_kind": "visible_policy_affordance",
+        "atomic_change": "Add action_policies, list_action_policies, and require policy_id before submit_score.",
+        "base_pass_rate": 1.0,
+        "evolved_pass_rate": 1.0,
+        "metrics": {
+          "delta_tool_count": 1,
+          "delta_gold_steps": 1,
+          "instruction_length_delta": 91
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "base_mean_pass_rate": 0.6888666666666666,
+    "bootstrap_mean_drop_ci95": [
+      -0.1555,
+      -0.011133333333333334
+    ],
+    "evolved_eq_base_count": 25,
+    "evolved_gt_base_count": 5,
+    "evolved_lt_base_count": 0,
+    "evolved_mean_pass_rate": 0.7666666666666667,
+    "mean_delta_gold_steps": 1.0,
+    "mean_delta_tool_count": 1.0,
+    "mean_instruction_length_delta": 91.0,
+    "mean_paired_pass_rate_drop": -0.07780000000000001,
+    "median_paired_pass_rate_drop": 0.0,
+    "n_excluded": 0,
+    "n_included": 30,
+    "n_pairs": 30,
+    "n_pass_rate_pairs": 30,
+    "sign_test_non_tie_n": 5,
+    "sign_test_two_sided_p": 0.0625
+  },
+  "evidence": [
+    {
+      "id": "ev_001",
+      "kind": "run",
+      "label": "paired_local_solver_study",
+      "value": "completed",
+      "confidence": 1.0,
+      "supports": "Recorded n=30 General Agent paired local-solver result."
+    }
+  ],
+  "artifacts": [],
+  "warnings": [],
+  "error": null
+}
