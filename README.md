@@ -48,7 +48,6 @@ general_agent/compare_input.json
 general_agent/inspect_input.json
 general_agent/envelopes/zero_n30_study_envelope.json
 general_agent/results/zero_n30_statistics.json
-general_agent/results/atomic_non_degradation_hypothesis.json
 ```
 
 ## Install
@@ -118,27 +117,6 @@ The evolved tasks did not make the solver worse. Making the implicit rule
 explicit through a tool preserved or improved pass rate in this n=30 run.
 ```
 
-Second checked hypothesis:
-
-```text
-For included General Agent visible-policy-affordance task pairs, the mutation is
-structurally atomic and non-degrading: exactly one tool is added, exactly one
-gold step is added, and evolved pass rate is never lower than paired base pass
-rate.
-```
-
-Recorded result:
-
-```text
-n_pairs = 30
-delta_tool_eq_1_count = 30
-delta_gold_steps_eq_1_count = 30
-non_degraded_pairs = 30
-improved_pairs = 5
-tied_pairs = 25
-worsened_pairs = 0
-```
-
 ## Command Loop
 
 Describe the substrate contract:
@@ -153,7 +131,7 @@ Compare the recorded General Agent study envelope:
 uv run research-env --spec general_agent/research_env.yaml compare-results < general_agent/compare_input.json
 ```
 
-Inspect the saved second-hypothesis result artifact:
+Inspect the saved statistics artifact:
 
 ```bash
 uv run research-env --spec general_agent/research_env.yaml inspect-artifact < general_agent/inspect_input.json
