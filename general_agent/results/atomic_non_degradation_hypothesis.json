@@ -1,0 +1,46 @@
+{
+  "schema_version": "research-env.study-result.v0",
+  "hypothesis_id": "general_agent_atomic_non_degradation_n30",
+  "hypothesis": "For included General Agent visible-policy-affordance task pairs, the mutation is structurally atomic and non-degrading: exactly one tool is added, exactly one gold step is added, and evolved pass rate is never lower than paired base pass rate.",
+  "substrate_id": "general_agent_visible_policy_affordance",
+  "cli_process": {
+    "describe_call_id": "call_describe_18801bb9f8d4",
+    "compare_results_call_id": "call_compare_results_b38b5e203e3e",
+    "inspect_artifact_call_id": "call_inspect_artifact_73f95c8d6c9f"
+  },
+  "source_artifacts": [
+    {
+      "id": "art_zero_n30_study_envelope",
+      "path": "general_agent/envelopes/zero_n30_study_envelope.json",
+      "sha256": "b97165114fb4b17ec0e323218025504a57ac1c9d009e1ac713301f9d26923bf8"
+    },
+    {
+      "id": "art_zero_n30_statistics",
+      "path": "general_agent/results/zero_n30_statistics.json",
+      "sha256": "7c60d542a634434eaec4ce070353bd6fc1fb981eda60238271f64beadf55f517"
+    }
+  ],
+  "fixed_context": {
+    "solver": "general-agent-solver-local",
+    "model": "moonshotai/kimi-k2.6",
+    "rollouts_per_condition": 3,
+    "mutation_family": "visible_policy_affordance"
+  },
+  "result": {
+    "n_pairs": 30,
+    "n_included": 30,
+    "n_pass_rate_pairs": 30,
+    "delta_tool_eq_1_count": 30,
+    "delta_gold_steps_eq_1_count": 30,
+    "non_degraded_pairs": 30,
+    "improved_pairs": 5,
+    "tied_pairs": 25,
+    "worsened_pairs": 0,
+    "mean_delta_tool_count": 1.0,
+    "mean_delta_gold_steps": 1.0,
+    "mean_paired_pass_rate_drop": -0.07780000000000001,
+    "min_instruction_length_delta": 91,
+    "max_instruction_length_delta": 91
+  },
+  "conclusion": "Supported on the included n=30 evidence: all 30 included mutations added exactly one tool and one gold step; 0/30 evolved tasks had lower pass rate than base; 5 improved and 25 tied."
+}
