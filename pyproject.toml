@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "research-env"
-version = "0.1.0"
-description = "Passive CLI contract for environment-backed research instruments."
+version = "0.2.0"
+description = "Passive CLI contract that exposes verifiers v1 tasksets as research instruments."
 requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0.2",
+    "verifiers>=0.2.0.dev0",
 ]
 
 [project.scripts]
@@ -16,11 +17,12 @@ research-env = "cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-py-modules = ["cli", "envelope", "modes", "provenance", "spec"]
+py-modules = ["cli", "envelope", "modes", "provenance", "spec", "stats"]
 packages = ["adapters"]
 
 [dependency-groups]
 dev = [
+    "pytest>=8",
     "ruff>=0.14.6",
 ]
 

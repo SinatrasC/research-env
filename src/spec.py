@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from envelope import SCHEMA_VERSION
+
+# verifiers v1 runtimes. `prime` (remote sandboxes) is billed, so a spec must name its runtime.
+RUNTIME_TYPES = ("subprocess", "docker", "prime", "custom")
 
 
 class SpecError(ValueError):
@@ -41,24 +44,31 @@ class ExecutionSpec:
 
 
 @dataclass(frozen=True)
-class TaskSourceSpec:
-    type: str
-    path: str | None = None
-    env_id: str | None = None
-    env_args: dict[str, Any] = field(default_factory=dict)
-    env_args_file: str | None = None
-    dataset_name: str | None = None
-    dataset_subset: str | None = None
-    split: str = "train"
-    question_key: str = "question"
-    answer_key: str = "answer"
-    id_key: str | None = None
-    info_key: str | None = "info"
+class TasksetSpec:
+    """A verifiers v1 taskset: its installed id and the `TasksetConfig` values to load it with."""
+
+    id: str
+    config: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class EvalShapeSpec:
+    """The evaluation shape `run-subject` holds fixed for every subject. A subject supplies the
+    model (and may override the client endpoint); everything else comes from here."""
+
+    harness: dict[str, Any]
+    sampling: dict[str, Any]
+    num_rollouts: int
+    max_concurrent: int | None
+    max_turns: int | None
+    client: dict[str, Any]
 
 
 @dataclass(frozen=True)
 class SubstrateSpec:
-    task_source: TaskSourceSpec
+    taskset: TasksetSpec
+    runtime: dict[str, Any]
+    eval: EvalShapeSpec
 
 
 @dataclass(frozen=True)
@@ -70,8 +80,8 @@ class ResearchEnvSpec:
     source_env: str
     adapter: AdapterSpec
     contracts: ContractsSpec
-    execution: ExecutionSpec = field(default_factory=ExecutionSpec)
-    substrate: SubstrateSpec | None = None
+    execution: ExecutionSpec
+    substrate: SubstrateSpec
 
     def resolve(self, path: str) -> Path:
         return (self.root / path).resolve()
@@ -104,14 +114,10 @@ def parse_spec(raw: dict[str, Any], spec_path: Path) -> ResearchEnvSpec:
     root = spec_path.parent.resolve()
     schema_version = _required_str(raw, "schema_version")
     if schema_version != SCHEMA_VERSION:
-        raise SpecError(f"Unsupported schema_version: {schema_version}")
-
+        raise SpecError(f"Unsupported schema_version: {schema_version} (this build reads {SCHEMA_VERSION}).")
     adapter_raw = _required_map(raw, "adapter")
     contracts_raw = _required_map(raw, "contracts")
     execution_raw = raw.get("execution") or {}
-    substrate_raw = raw.get("substrate") or {}
-    task_source_raw = substrate_raw.get("task_source") if isinstance(substrate_raw, dict) else None
-
     fixed_resources = _fixed_resources(contracts_raw)
     spec = ResearchEnvSpec(
         path=spec_path,
@@ -131,7 +137,7 @@ def parse_spec(raw: dict[str, Any], spec_path: Path) -> ResearchEnvSpec:
             default_timeout_seconds=int(execution_raw.get("default_timeout_seconds", 600)),
             arbitrary_subjects=bool(execution_raw.get("arbitrary_subjects", True)),
         ),
-        substrate=SubstrateSpec(task_source=_task_source(task_source_raw)) if task_source_raw else None,
+        substrate=_substrate(_required_map(raw, "substrate")),
     )
     validate_spec(spec)
     return spec
@@ -143,49 +149,40 @@ def validate_spec(spec: ResearchEnvSpec) -> None:
     if Path(spec.execution.artifact_root).is_absolute():
         raise SpecError("execution.artifact_root must be relative to the spec directory.")
     _ensure_within_root(spec.root, spec.artifact_root, "execution.artifact_root")
-    if spec.substrate is None:
-        raise SpecError("substrate.task_source is required.")
-    source = spec.substrate.task_source
-    if source.type == "local_jsonl":
-        if not source.path:
-            raise SpecError("substrate.task_source.path is required for local_jsonl.")
-        if Path(source.path).is_absolute():
-            raise SpecError("substrate.task_source.path must be relative to the spec directory.")
-        task_path = spec.resolve(source.path)
-        _ensure_within_root(spec.root, task_path, "substrate.task_source.path")
-        if not task_path.exists():
-            raise SpecError(f"Local task source does not exist: {source.path}")
-    elif source.type == "huggingface":
-        if not source.dataset_name:
-            raise SpecError("substrate.task_source.dataset_name is required for huggingface.")
-    elif source.type == "verifiers":
-        if source.env_args_file:
-            if Path(source.env_args_file).is_absolute():
-                raise SpecError("substrate.task_source.env_args_file must be relative to the spec directory.")
-            env_args_path = spec.resolve(source.env_args_file)
-            _ensure_within_root(spec.root, env_args_path, "substrate.task_source.env_args_file")
-            if not env_args_path.exists():
-                raise SpecError(f"Verifiers env args file does not exist: {source.env_args_file}")
-    else:
-        raise SpecError(f"Unsupported substrate.task_source.type: {source.type}")
+    for resource in spec.contracts.fixed_resources:
+        if resource.path is not None:
+            if Path(resource.path).is_absolute():
+                raise SpecError(f"Fixed resource {resource.id}: path must be relative to the spec directory.")
+            _ensure_within_root(spec.root, spec.resolve(resource.path), f"fixed resource {resource.id}")
 
 
-def _task_source(raw: Any) -> TaskSourceSpec:
-    if not isinstance(raw, dict):
-        raise SpecError("substrate.task_source must be a mapping.")
-    return TaskSourceSpec(
-        type=_required_str(raw, "type"),
-        path=_optional_str(raw, "path"),
-        env_id=_optional_str(raw, "env_id"),
-        env_args=_optional_dict(raw, "env_args"),
-        env_args_file=_optional_str(raw, "env_args_file"),
-        dataset_name=_optional_str(raw, "dataset_name"),
-        dataset_subset=_optional_str(raw, "dataset_subset"),
-        split=str(raw.get("split", "train")),
-        question_key=str(raw.get("question_key", "question")),
-        answer_key=str(raw.get("answer_key", "answer")),
-        id_key=_optional_str(raw, "id_key"),
-        info_key=_optional_str(raw, "info_key", default="info"),
+def _substrate(raw: dict[str, Any]) -> SubstrateSpec:
+    taskset_raw = _required_map(raw, "taskset", prefix="substrate")
+    runtime = _required_map(raw, "runtime", prefix="substrate")
+    runtime_type = runtime.get("type")
+    if runtime_type not in RUNTIME_TYPES:
+        raise SpecError(f"substrate.runtime.type must be one of {', '.join(RUNTIME_TYPES)}; got {runtime_type!r}.")
+    eval_raw = _required_map(raw, "eval", prefix="substrate")
+    harness = _required_map(eval_raw, "harness", prefix="substrate.eval")
+    if not isinstance(harness.get("id"), str) or not harness["id"].strip():
+        raise SpecError('substrate.eval.harness.id must be a string (quote YAML\'s null harness as "null").')
+    num_rollouts = eval_raw.get("num_rollouts", 1)
+    if not isinstance(num_rollouts, int) or num_rollouts < 1:
+        raise SpecError("substrate.eval.num_rollouts must be a positive integer.")
+    return SubstrateSpec(
+        taskset=TasksetSpec(
+            id=_required_str(taskset_raw, "id", prefix="substrate.taskset"),
+            config=_optional_dict(taskset_raw, "config"),
+        ),
+        runtime=dict(runtime),
+        eval=EvalShapeSpec(
+            harness=dict(harness),
+            sampling=_optional_dict(eval_raw, "sampling"),
+            num_rollouts=num_rollouts,
+            max_concurrent=_optional_int(eval_raw, "max_concurrent"),
+            max_turns=_optional_int(eval_raw, "max_turns"),
+            client=_optional_dict(eval_raw, "client"),
+        ),
     )
 
 
@@ -229,26 +226,26 @@ def _ensure_within_root(root: Path, path: Path, label: str) -> None:
         raise SpecError(f"{label} must stay within the spec directory.") from exc
 
 
-def _required_map(raw: dict[str, Any], key: str) -> dict[str, Any]:
+def _required_map(raw: dict[str, Any], key: str, *, prefix: str = "") -> dict[str, Any]:
     value = raw.get(key)
     if not isinstance(value, dict):
-        raise SpecError(f"Missing or invalid mapping: {key}")
+        raise SpecError(f"Missing or invalid mapping: {prefix + '.' if prefix else ''}{key}")
     return value
 
 
-def _required_str(raw: dict[str, Any], key: str) -> str:
+def _required_str(raw: dict[str, Any], key: str, *, prefix: str = "") -> str:
     value = raw.get(key)
     if not isinstance(value, str) or not value.strip():
-        raise SpecError(f"Missing or invalid string: {key}")
+        raise SpecError(f"Missing or invalid string: {prefix + '.' if prefix else ''}{key}")
     return value
 
 
-def _optional_str(raw: dict[str, Any], key: str, *, default: str | None = None) -> str | None:
-    value = raw.get(key, default)
+def _optional_int(raw: dict[str, Any], key: str) -> int | None:
+    value = raw.get(key)
     if value is None:
         return None
-    if not isinstance(value, str):
-        raise SpecError(f"Invalid string: {key}")
+    if not isinstance(value, int) or value < 1:
+        raise SpecError(f"Invalid positive integer: {key}")
     return value
 
 

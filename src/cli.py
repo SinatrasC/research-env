@@ -13,7 +13,7 @@ from envelope import CallContext, error_envelope, success_envelope
 from provenance import build_contract_status, build_provenance
 from spec import SpecError, load_spec
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 INSTRUMENTS = (
     "describe",

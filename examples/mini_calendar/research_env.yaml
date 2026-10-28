@@ -1,0 +1,40 @@
+schema_version: research-env.v1
+id: mini_calendar_booking
+source_env: mini-calendar
+
+adapter:
+  module: adapters.verifiers_v1
+
+contracts:
+  fixed:
+    - id: taskset:mini-calendar
+      path: taskset/mini_calendar
+      sha256: b7e8a53eba46859e83cf848e0fb7377f5b4f7ecea288a12e945d6adaa2bf3def   # recorded 2026-10-28; contract_status flags any change
+    - harness:null
+    - runtime:subprocess
+    - scoring:booked
+  mutable:
+    - artifacts/**
+  substrate_mutation: false
+
+execution:
+  artifact_root: artifacts
+  default_timeout_seconds: 900
+
+substrate:
+  taskset:
+    id: mini-calendar
+    config:
+      variant: base
+  runtime:
+    type: subprocess        # local, free; `prime` would start billed remote sandboxes
+  eval:
+    harness:
+      id: "null"            # answer-only harness that still mounts the task's MCP tools
+    sampling:
+      temperature: 0.0
+    num_rollouts: 1
+    max_turns: 6
+    client:
+      base_url: http://127.0.0.1:8765/v1   # examples/mini_calendar/fake_model.py
+      api_key_var: FAKE_MODEL_KEY

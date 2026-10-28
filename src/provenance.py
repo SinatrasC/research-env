@@ -3,13 +3,14 @@ from __future__ import annotations
 import platform
 import subprocess
 import sys
+from importlib import metadata
 from pathlib import Path
 from typing import Any
 
 from envelope import SCHEMA_VERSION, sha256_bytes, sha256_json
 from spec import FixedResourceSpec, ResearchEnvSpec
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 
 def build_provenance(spec: ResearchEnvSpec | None = None) -> dict[str, Any]:
@@ -37,7 +38,7 @@ def build_provenance(spec: ResearchEnvSpec | None = None) -> dict[str, Any]:
             "adapter_module": spec.adapter.module,
             "schema_version": spec.schema_version,
         }
-        data["task_source"] = _task_source_provenance(spec)
+        data["substrate"] = _substrate_provenance(spec)
     return data
 
 
@@ -53,38 +54,32 @@ def build_contract_status(spec: ResearchEnvSpec | None = None) -> dict[str, Any]
     }
 
 
-def _task_source_provenance(spec: ResearchEnvSpec) -> dict[str, Any] | None:
-    if spec.substrate is None:
-        return None
-    source = spec.substrate.task_source
-    data: dict[str, Any] = {
-        "type": source.type,
-        "question_key": source.question_key,
-        "answer_key": source.answer_key,
-        "id_key": source.id_key,
-        "info_key": source.info_key,
+def _substrate_provenance(spec: ResearchEnvSpec) -> dict[str, Any]:
+    substrate = spec.substrate
+    return {
+        "taskset_id": substrate.taskset.id,
+        "taskset_config_sha256": sha256_json(substrate.taskset.config),
+        "taskset_package_version": _package_version(substrate.taskset.id),
+        "verifiers_version": _package_version("verifiers"),
+        "runtime_type": substrate.runtime.get("type"),
+        "eval_shape_sha256": sha256_json(
+            {
+                "harness": substrate.eval.harness,
+                "sampling": substrate.eval.sampling,
+                "num_rollouts": substrate.eval.num_rollouts,
+                "max_concurrent": substrate.eval.max_concurrent,
+                "max_turns": substrate.eval.max_turns,
+                "client": substrate.eval.client,
+            }
+        ),
     }
-    if source.path:
-        data["path"] = source.path
-        path = spec.resolve(source.path)
-        data["path_exists"] = path.exists()
-        if path.exists() and path.is_file():
-            data["sha256"] = sha256_bytes(path.read_bytes())
-    if source.env_id:
-        data["env_id"] = source.env_id
-    if source.env_args:
-        data["env_args_sha256"] = sha256_json(source.env_args)
-    if source.env_args_file:
-        path = spec.resolve(source.env_args_file)
-        data["env_args_file"] = source.env_args_file
-        data["env_args_file_exists"] = path.exists()
-        if path.exists() and path.is_file():
-            data["env_args_file_sha256"] = sha256_bytes(path.read_bytes())
-    if source.dataset_name:
-        data["dataset_name"] = source.dataset_name
-        data["dataset_subset"] = source.dataset_subset
-        data["split"] = source.split
-    return data
+
+
+def _package_version(name: str) -> str | None:
+    try:
+        return metadata.version(name)
+    except metadata.PackageNotFoundError:
+        return None
 
 
 def _fixed_resource_status(spec: ResearchEnvSpec, resource: FixedResourceSpec) -> dict[str, Any]:
@@ -125,7 +120,15 @@ def _fixed_resource_status(spec: ResearchEnvSpec, resource: FixedResourceSpec) -
 
 def _hash_directory(path: Path) -> str:
     rows: list[dict[str, str]] = []
-    for child in sorted(item for item in path.rglob("*") if item.is_file()):
+    # Bytecode and build metadata change on import or install, not when the resource changes.
+    for child in sorted(
+        item
+        for item in path.rglob("*")
+        if item.is_file()
+        and "__pycache__" not in item.parts
+        and item.suffix != ".pyc"
+        and not any(part.endswith(".egg-info") for part in item.parts)
+    ):
         rows.append(
             {
                 "path": str(child.relative_to(path)).replace("\\", "/"),

@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any
 from uuid import uuid4
 
-SCHEMA_VERSION = "research-env.v0"
+SCHEMA_VERSION = "research-env.v1"
 
 
 @dataclass
